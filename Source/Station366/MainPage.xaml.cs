@@ -47,6 +47,13 @@ namespace Station366
             MediaControl.StopPressed += MediaControlOnStopPressed;
             MediaControl.NextTrackPressed += MediaControlOnNextTrackPressed;
             MediaControl.PlayPauseTogglePressed += MediaControlOnPlayPauseTogglePressed;
+
+            Loaded += MainPage_Loaded;
+        }
+
+        void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AttachPlayerEvents();
         }
 
         private async void MediaControlOnPlayPauseTogglePressed(object sender, object o)

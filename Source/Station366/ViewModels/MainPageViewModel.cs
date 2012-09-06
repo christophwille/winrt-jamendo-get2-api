@@ -17,6 +17,23 @@ namespace Station366.ViewModels
     {
         private JamendoProxy _proxy = new JamendoProxy();
 
+        public void AttachPlayerEvents()
+        {
+            Player.MediaEnded += Player_MediaEnded;
+            Player.MediaOpened += Player_MediaOpened;
+        }
+
+        void Player_MediaOpened(object sender, RoutedEventArgs e)
+        {
+            // Could be useful later
+            var trackDuration = Player.NaturalDuration.TimeSpan;
+        }
+
+        async void Player_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            await SkipAhead();
+        }
+
         public async Task GetStations()
         {
             var stations = await _proxy.GetStationList();
