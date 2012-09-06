@@ -30,6 +30,8 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+        
+        <common:ObjectNullToVisibilityConverter x:Name="nullVisConverter" />
     </Page.Resources>
 
     <!--
@@ -85,7 +87,8 @@
                 SelectionMode="Single"
                 IsSwipeEnabled="false"/>
 
-            <Grid HorizontalAlignment="Left" Width="250" Grid.Column="3" Grid.Row="1" VerticalAlignment="Top">
+            <Grid HorizontalAlignment="Left" Width="250" Grid.Column="3" Grid.Row="1" VerticalAlignment="Top"
+                  Visibility="{Binding CurrentTrack, Converter={StaticResource nullVisConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />

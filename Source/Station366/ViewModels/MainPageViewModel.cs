@@ -213,7 +213,11 @@ namespace Station366.ViewModels
 
         private void SetPlayerSourceToCurrentTrack()
         {
-            if (null == CurrentTrack) return;
+            if (null == CurrentTrack)
+            {
+                Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Player.Source = null);
+                return;
+            }
 
             string streamUrl = CurrentTrack.StreamUrl;
             Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Player.Source = new Uri(streamUrl));
