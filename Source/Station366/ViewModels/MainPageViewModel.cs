@@ -213,14 +213,24 @@ namespace Station366.ViewModels
 
         private void SetPlayerSourceToCurrentTrack()
         {
-            if (null == CurrentTrack)
+            var currentTrack = CurrentTrack;
+
+            if (null == currentTrack)
             {
                 Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Player.Source = null);
+
+                Windows.Media.MediaControl.TrackName = "";
+
                 return;
             }
 
-            string streamUrl = CurrentTrack.StreamUrl;
+            string streamUrl = currentTrack.StreamUrl;
             Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Player.Source = new Uri(streamUrl));
+
+            Windows.Media.MediaControl.TrackName = currentTrack.Name;
+
+            // Cannot be set as per the documentation http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediacontrol.albumart(v=win.10).aspx
+            // Windows.Media.MediaControl.AlbumArt = new Uri(currentTrack.Album.ImageUrl);
         }
 
         public void PlayPauseToggle()
