@@ -51,7 +51,7 @@ namespace Station366
         public async Task<List<Track>> GetTracks(int stationId, int? lastRadioPosition=null)
         {
             // http://developer.jamendo.com/en/wiki/Musiclist2ApiJoins
-            string trackListUrl = BaseUrl + "radioposition+id+stream+name+album_id+album_name+album_image/track/xml/?radioid=" + stationId.ToString();
+            string trackListUrl = BaseUrl + "radioposition+id+stream+name+album_id+album_name+album_image+album_url/track/xml/?radioid=" + stationId.ToString();
             
             if (null != lastRadioPosition)
             {
@@ -73,7 +73,8 @@ namespace Station366
                                 {
                                     Id = Convert.ToInt32((string)r.Element("album_id")),
                                     Name = (string)r.Element("album_name"),
-                                    ImageUrl = (string)r.Element("album_image")
+                                    ImageUrl = (string)r.Element("album_image"),
+                                    Url = (string)r.Element("album_url")
                                 }
                 });
 
