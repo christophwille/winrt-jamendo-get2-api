@@ -24,6 +24,27 @@ namespace Station366.ViewModels
             Player.MediaEnded += Player_MediaEnded;
             Player.MediaOpened += Player_MediaOpened;
             Player.MediaFailed += Player_MediaFailed;
+
+            // AttachPlayerEvents runs after LoadState, we can now load the current track, if any
+            var currentTrack = CurrentTrack;
+
+            // We come back from Terminated, thus we assume to have been in the Stopped state for the Player
+            if (null != currentTrack)
+            {
+                string streamUrl = currentTrack.StreamUrl;
+                string trackName = currentTrack.Name;
+
+                Window.Current.Dispatcher.RunAsync(
+                    CoreDispatcherPriority.Normal, 
+                    () =>
+                        {
+                            Player.AutoPlay = false;
+                            Player.Source = new Uri(streamUrl);
+                            Player.AutoPlay = true;
+
+                            Windows.Media.MediaControl.TrackName = trackName;
+                        });
+            }
         }
 
         void Player_MediaFailed(object sender, ExceptionRoutedEventArgs e)
@@ -56,11 +77,10 @@ namespace Station366.ViewModels
 
             if (null != state.CurrentTrackRadioPosition)
             {
-                // TODO In LoadState, we cannot yet access the Player property, but we have to set the Source somehow 
+                // LoadState happens before the window is available, thus we cannot access Player. Therefore set the backing field only.
+                // The current track (if any) is loaded into the Player in AttachPlayerEvents
                 _currentTrack = _playList.FirstOrDefault(t => t.RadioPosition == state.CurrentTrackRadioPosition.Value);
                 RaisePropertyChanged(CurrentTrackPropertyName);
-
-                // CurrentTrack = _playList.FirstOrDefault(t => t.RadioPosition == state.CurrentTrackRadioPosition.Value);
             }
         }
 
