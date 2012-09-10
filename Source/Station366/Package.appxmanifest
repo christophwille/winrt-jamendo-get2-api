@@ -2,8 +2,8 @@
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
   <Identity Name="9389ef69-02ff-4b7c-a289-64f7f0fb19c7" Publisher="CN=christophw" Version="1.0.0.0" />
   <Properties>
-    <DisplayName>Station366</DisplayName>
-    <PublisherDisplayName>christophw</PublisherDisplayName>
+    <DisplayName>Station 366</DisplayName>
+    <PublisherDisplayName>Christoph Wille</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Station366.App">
-      <VisualElements DisplayName="Station366" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Station366" ForegroundText="light" BackgroundColor="#522A5B">
+      <VisualElements DisplayName="Station 366" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Play music from jamendo's radio channels, from Classic to HipHop." ForegroundText="light" BackgroundColor="#522A5B">
         <DefaultTile ShowName="allLogos" />
         <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#522A5B" />
       </VisualElements>

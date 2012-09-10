@@ -78,7 +78,9 @@
         <Grid Grid.Row="1" x:Name="contentGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" x:Name="rowHeaders" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="*" x:Name="rowHorizontalDefault"/>
+                <RowDefinition Height="0" x:Name="rowVerticalStationsHeader"/>
+                <RowDefinition Height="0" x:Name="rowVerticalStations"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="115" x:Name="colSpacerLeft"/>
@@ -88,11 +90,12 @@
                 <ColumnDefinition Width="115" x:Name="colSpacerRight"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock x:Name="stationsHeader" Grid.Row="0" Grid.Column="1" Margin="0,15,15,15" Text="jamendo stations" Style="{StaticResource PageSubheaderTextStyle}"/>
-            <TextBlock x:Name="playerHeader" Grid.Row="0" Grid.Column="3" Margin="0,15,15,15" Text="currently playing" Style="{StaticResource PageSubheaderTextStyle}"/>
+            <TextBlock VerticalAlignment="Top" x:Name="stationsHeader" Grid.Row="0" Grid.Column="1" Margin="0,15,15,15" Text="jamendo stations" Style="{StaticResource PageSubheaderTextStyle}"/>
+            <TextBlock VerticalAlignment="Top" x:Name="playerHeader" Grid.Row="0" Grid.Column="3" Margin="0,15,15,15" Text="currently playing" Style="{StaticResource PageSubheaderTextStyle}"/>
 
             <!-- Horizontal scrolling grid used in most view states -->
             <GridView
+                VerticalAlignment="Top"
                 x:Name="stationsGridView"
                 Visibility="{Binding IsStationsInfoMessagesPaneVisible, Converter={StaticResource negboolVisConverter}}"
                 AutomationProperties.AutomationId="ItemsGridView"
@@ -120,7 +123,8 @@
             </StackPanel>
 
             <Grid x:Name="playerGrid"
-                  HorizontalAlignment="Left" Width="250" Grid.Column="3" Grid.Row="1" VerticalAlignment="Top"
+                  HorizontalAlignment="Left" Width="250" Grid.Column="3" Grid.Row="1" 
+                  VerticalAlignment="Top"
                   Visibility="{Binding CurrentTrack, Converter={StaticResource nullVisConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -187,8 +191,79 @@
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="backButton" Storyboard.TargetProperty="Style">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitBackButtonStyle}"/>
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="stationsGridView" Storyboard.TargetProperty="Padding">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="96,136,86,56"/>
+
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="rowVerticalStationsHeader" Storyboard.TargetProperty="Height">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <GridLength>60</GridLength>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="rowVerticalStations" Storyboard.TargetProperty="Height">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <GridLength>*</GridLength>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="colPlayer" Storyboard.TargetProperty="Width">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <GridLength>0</GridLength>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="colSpacerStationsPlayer" Storyboard.TargetProperty="Width">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <GridLength>0</GridLength>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="colSpacerRight" Storyboard.TargetProperty="Width">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <GridLength>0</GridLength>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+
+
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Row)" Storyboard.TargetName="stationsHeader">
+                        	<DiscreteObjectKeyFrame KeyTime="0">
+                        		<DiscreteObjectKeyFrame.Value>
+                        			<x:Int32>2</x:Int32>
+                        		</DiscreteObjectKeyFrame.Value>
+                        	</DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Column)" Storyboard.TargetName="playerHeader">
+                        	<DiscreteObjectKeyFrame KeyTime="0">
+                        		<DiscreteObjectKeyFrame.Value>
+                        			<x:Int32>1</x:Int32>
+                        		</DiscreteObjectKeyFrame.Value>
+                        	</DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Row)" Storyboard.TargetName="stationsGridView">
+                        	<DiscreteObjectKeyFrame KeyTime="0">
+                        		<DiscreteObjectKeyFrame.Value>
+                        			<x:Int32>3</x:Int32>
+                        		</DiscreteObjectKeyFrame.Value>
+                        	</DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Row)" Storyboard.TargetName="StationsInfoMessagesPane">
+                        	<DiscreteObjectKeyFrame KeyTime="0">
+                        		<DiscreteObjectKeyFrame.Value>
+                        			<x:Int32>3</x:Int32>
+                        		</DiscreteObjectKeyFrame.Value>
+                        	</DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Column)" Storyboard.TargetName="playerGrid">
+                        	<DiscreteObjectKeyFrame KeyTime="0">
+                        		<DiscreteObjectKeyFrame.Value>
+                        			<x:Int32>1</x:Int32>
+                        		</DiscreteObjectKeyFrame.Value>
+                        	</DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
