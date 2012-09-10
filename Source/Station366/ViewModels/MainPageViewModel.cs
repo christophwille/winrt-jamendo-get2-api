@@ -21,6 +21,13 @@ namespace Station366.ViewModels
         {
             Player.MediaEnded += Player_MediaEnded;
             Player.MediaOpened += Player_MediaOpened;
+            Player.MediaFailed += Player_MediaFailed;
+        }
+
+        void Player_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            // var errorMessage = e.ErrorMessage;  // not very useful
+            IsPlayerInfoMessagesPaneVisible = true;
         }
 
         void Player_MediaOpened(object sender, RoutedEventArgs e)
@@ -171,6 +178,8 @@ namespace Station366.ViewModels
 
         public async Task SkipAhead()
         {
+            IsPlayerInfoMessagesPaneVisible = false;
+
             int numOfElements = _playList.Count();
             int radioposition = CurrentTrack != null ? CurrentTrack.RadioPosition : 0;
             radioposition++;

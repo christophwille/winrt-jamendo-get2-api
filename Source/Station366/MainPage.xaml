@@ -75,7 +75,7 @@
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="contentGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
                 <RowDefinition Height="*" />
@@ -115,14 +115,15 @@
                         x:Name="StationsInfoMessagesPane"
                         Visibility="{Binding IsStationsInfoMessagesPaneVisible, Converter={StaticResource boolVisConverter}}">
 
-                <TextBlock VerticalAlignment="Center">We could not connect you with Jamendo. Please try again later.</TextBlock>
-                <Button VerticalAlignment="Center" Content="Refresh stations list" Command="{Binding GetStationsCommand, Mode=OneWay}"  />
+                <TextBlock Style="{StaticResource TitleTextStyle}" VerticalAlignment="Center">We could not connect you with Jamendo. Please try again later.</TextBlock>
+                <Button Margin="0,5,5,5" VerticalAlignment="Center" Content="Refresh stations list" Command="{Binding GetStationsCommand, Mode=OneWay}"  />
             </StackPanel>
 
             <Grid x:Name="playerGrid"
                   HorizontalAlignment="Left" Width="250" Grid.Column="3" Grid.Row="1" VerticalAlignment="Top"
                   Visibility="{Binding CurrentTrack, Converter={StaticResource nullVisConverter}}">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -140,37 +141,38 @@
                 </Grid>
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
-                    <!-- play/pause should be in one button with the style swapped per state -->
                     <Button Style="{StaticResource PlayAppBarButtonStyle}"  Command="{Binding PlayCommand, Mode=OneWay}" />
                     <Button Style="{StaticResource PauseAppBarButtonStyle}"  Command="{Binding PauseCommand, Mode=OneWay}" />
                     <Button Style="{StaticResource SkipAheadAppBarButtonStyle}" AutomationProperties.Name="Skip"  Command="{Binding SkipAheadCommand, Mode=OneWay}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Top"
+                            Grid.Row="2"
                             x:Name="PlayerInfoMessagesPane"
                             Visibility="{Binding IsPlayerInfoMessagesPaneVisible, Converter={StaticResource boolVisConverter}}">
-
+                    <TextBlock Style="{StaticResource TitleTextStyle}" VerticalAlignment="Top" HorizontalAlignment="Center">Retrieving / playing back of the song failed. Please restore Internet connectivity and then skip ahead.</TextBlock>
                 </StackPanel>
             </Grid>
         </Grid>
-        
+
+
         <!-- Vertical scrolling list only used when snapped -->
         <ListView
-            x:Name="stationsListView"
-            AutomationProperties.AutomationId="ItemsListView"
-            AutomationProperties.Name="Items"
-            TabIndex="1"
-            Grid.Row="1"
-            Visibility="Collapsed"
-            Margin="0,-10,0,0"
-            Padding="10,0,0,60"
-            ItemsSource="{Binding Source={StaticResource stationsViewSource}}"
-            ItemTemplate="{StaticResource StationsListViewItemTemplate}"
-            SelectedItem="{Binding SelectedStation, Mode=TwoWay}"
-            IsSynchronizedWithCurrentItem="False"
-            SelectionMode="Single"
-            IsSwipeEnabled="false"/>
-        
+                        x:Name="stationsListView"
+                        AutomationProperties.AutomationId="ItemsListView"
+                        AutomationProperties.Name="Items"
+                        TabIndex="1"
+                        Grid.Row="1"
+                        Visibility="Collapsed"
+                        Margin="0,-10,0,0"
+                        Padding="10,0,0,60"
+                        ItemsSource="{Binding Source={StaticResource stationsViewSource}}"
+                        ItemTemplate="{StaticResource StationsListViewItemTemplate}"
+                        SelectedItem="{Binding SelectedStation, Mode=TwoWay}"
+                        IsSynchronizedWithCurrentItem="False"
+                        SelectionMode="Single"
+                        IsSwipeEnabled="false"/>
         
         <VisualStateManager.VisualStateGroups>
 

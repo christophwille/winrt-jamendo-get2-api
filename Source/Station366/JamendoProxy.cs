@@ -51,7 +51,13 @@ namespace Station366
         public async Task<List<Track>> GetTracks(int stationId, int? lastRadioPosition=null)
         {
             // http://developer.jamendo.com/en/wiki/Musiclist2ApiJoins
-            string trackListUrl = BaseUrl + "radioposition+id+stream+name+album_id+album_name+album_image+album_url/track/xml/?radioid=" + stationId.ToString();
+            // However, n=X doesn't seem to be honored for radio stations, it returns five every time
+            var baseQuery = String.Format(
+                "radioposition+id+stream+name+album_id+album_name+album_image+album_url/track/xml/?radioid={0}&n={1}",
+                stationId, 
+                Constants.NumOfTracksToRetrievePerCall);
+
+            string trackListUrl = BaseUrl + baseQuery;
             
             if (null != lastRadioPosition)
             {
