@@ -17,7 +17,6 @@
             Source="{Binding Stations}"
             d:Source="{Binding Stations, Source={d:DesignInstance Type=data:SampleDataSource, IsDesignTimeCreatable=True}}"/>
 
-        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">Station 366</x:String>
 
         <DataTemplate x:Key="StationsGridViewItemTemplate">
@@ -30,8 +29,29 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        
+
+        <DataTemplate x:Key="StationsListViewItemTemplate">
+            <Grid Margin="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="60" Height="60">
+                    <Image Source="{Binding ImageUrl}" Stretch="UniformToFill"/>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource ItemTextStyle}" MaxHeight="40"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <common:BooleanNegationConverter x:Name="negBoolConverter" />
         <common:ObjectNullToVisibilityConverter x:Name="nullVisConverter" />
+        <common:BooleanToVisibilityConverter x:Name="boolVisConverter" />
+
+        <common:TwoStageConverter x:Name="negboolVisConverter" 
+                                  First="{StaticResource negBoolConverter}" 
+                                  Second="{StaticResource boolVisConverter}" />
     </Page.Resources>
 
     <!--
@@ -68,12 +88,13 @@
                 <ColumnDefinition Width="115"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,15,15,15" Text="jamendo stations" Style="{StaticResource PageSubheaderTextStyle}"/>
-            <TextBlock Grid.Row="0" Grid.Column="3" Margin="0,15,15,15" Text="currently playing" Style="{StaticResource PageSubheaderTextStyle}"/>
+            <TextBlock x:Name="stationsHeader" Grid.Row="0" Grid.Column="1" Margin="0,15,15,15" Text="jamendo stations" Style="{StaticResource PageSubheaderTextStyle}"/>
+            <TextBlock x:Name="playerHeader" Grid.Row="0" Grid.Column="3" Margin="0,15,15,15" Text="currently playing" Style="{StaticResource PageSubheaderTextStyle}"/>
 
             <!-- Horizontal scrolling grid used in most view states -->
             <GridView
                 x:Name="stationsGridView"
+                Visibility="{Binding IsStationsInfoMessagesPaneVisible, Converter={StaticResource negboolVisConverter}}"
                 AutomationProperties.AutomationId="ItemsGridView"
                 AutomationProperties.Name="Items"
                 TabIndex="1"
@@ -87,7 +108,19 @@
                 SelectionMode="Single"
                 IsSwipeEnabled="false"/>
 
-            <Grid HorizontalAlignment="Left" Width="250" Grid.Column="3" Grid.Row="1" VerticalAlignment="Top"
+            <StackPanel Orientation="Vertical" 
+                        VerticalAlignment="Top"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        x:Name="StationsInfoMessagesPane"
+                        Visibility="{Binding IsStationsInfoMessagesPaneVisible, Converter={StaticResource boolVisConverter}}">
+
+                <TextBlock VerticalAlignment="Center">We could not connect you with Jamendo. Please try again later.</TextBlock>
+                <Button VerticalAlignment="Center" Content="Refresh stations list" Command="{Binding GetStationsCommand, Mode=OneWay}"  />
+            </StackPanel>
+
+            <Grid x:Name="playerGrid"
+                  HorizontalAlignment="Left" Width="250" Grid.Column="3" Grid.Row="1" VerticalAlignment="Top"
                   Visibility="{Binding CurrentTrack, Converter={StaticResource nullVisConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -112,6 +145,12 @@
                     <Button Style="{StaticResource PauseAppBarButtonStyle}"  Command="{Binding PauseCommand, Mode=OneWay}" />
                     <Button Style="{StaticResource SkipAheadAppBarButtonStyle}" AutomationProperties.Name="Skip"  Command="{Binding SkipAheadCommand, Mode=OneWay}" />
                 </StackPanel>
+
+                <StackPanel Orientation="Vertical" 
+                            x:Name="PlayerInfoMessagesPane"
+                            Visibility="{Binding IsPlayerInfoMessagesPaneVisible, Converter={StaticResource boolVisConverter}}">
+
+                </StackPanel>
             </Grid>
         </Grid>
         
@@ -126,8 +165,10 @@
             Margin="0,-10,0,0"
             Padding="10,0,0,60"
             ItemsSource="{Binding Source={StaticResource stationsViewSource}}"
-            ItemTemplate="{StaticResource Standard80ItemTemplate}"
-            SelectionMode="None"
+            ItemTemplate="{StaticResource StationsListViewItemTemplate}"
+            SelectedItem="{Binding SelectedStation, Mode=TwoWay}"
+            IsSynchronizedWithCurrentItem="False"
+            SelectionMode="Single"
             IsSwipeEnabled="false"/>
         
         

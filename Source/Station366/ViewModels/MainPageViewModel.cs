@@ -34,12 +34,6 @@ namespace Station366.ViewModels
             await SkipAhead();
         }
 
-        public async Task GetStations()
-        {
-            var stations = await _proxy.GetStationList();
-            Stations = stations;
-        }
-
         public const string StationsPropertyName = "Stations";
         private List<Station> _stations = new List<Station>();
         public List<Station> Stations
@@ -250,6 +244,58 @@ namespace Station366.ViewModels
                         {
                         } 
                     });
+        }
+
+        public const string IsPlayerInfoMessagesPaneVisiblePropertyName = "IsPlayerInfoMessagesPaneVisible";
+        private bool _isPlayerInfoMessagesPaneVisible = false;
+        public bool IsPlayerInfoMessagesPaneVisible
+        {
+            get
+            {
+                return _isPlayerInfoMessagesPaneVisible;
+            }
+            private set
+            {
+                Set(IsPlayerInfoMessagesPaneVisiblePropertyName, ref _isPlayerInfoMessagesPaneVisible, value);
+            }
+        }
+
+        public const string IsStationsInfoMessagesPaneVisiblePropertyName = "IsStationsInfoMessagesPaneVisible";
+        private bool _isStationsInfoMessagesPaneVisible = false;
+        public bool IsStationsInfoMessagesPaneVisible
+        {
+            get
+            {
+                return _isStationsInfoMessagesPaneVisible;
+            }
+            private set
+            {
+                Set(IsStationsInfoMessagesPaneVisiblePropertyName, ref _isStationsInfoMessagesPaneVisible, value);
+            }
+        }
+
+        private RelayCommand _getStationscommand;
+        public RelayCommand GetStationsCommand
+        {
+            get
+            {
+                return _getStationscommand
+                    ?? (_getStationscommand = new RelayCommand(
+                        async () => await GetStations()));
+            }
+        }
+
+        public async Task GetStations()
+        {
+            IsStationsInfoMessagesPaneVisible = false;
+
+            var stations = await _proxy.GetStationList();
+            Stations = stations;
+
+            if (stations.Count == 0)
+            {
+                IsStationsInfoMessagesPaneVisible = true;
+            }
         }
     }
 }

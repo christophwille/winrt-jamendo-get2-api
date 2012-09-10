@@ -113,6 +113,7 @@
     <Compile Include="Common\ObjectNullToVisibilityConverter.cs" />
     <Compile Include="Common\RichTextColumns.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="Common\TwoStageConverter.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="JamendoProxy.cs" />
     <Compile Include="MainPage.xaml.cs">
