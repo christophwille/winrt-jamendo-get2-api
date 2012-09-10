@@ -15,9 +15,9 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Station366.App">
-      <VisualElements DisplayName="Station366" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Station366" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="Station366" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Station366" ForegroundText="light" BackgroundColor="#522A5B">
         <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="Assets\SplashScreen.png" />
+        <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#522A5B" />
       </VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" StartPage="MainPage.xaml">
