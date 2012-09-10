@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Callisto.Controls;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -47,6 +49,9 @@ namespace Station366
             // just ensure that the window is active
             if (rootFrame == null)
             {
+                // Register handler for CommandsRequested events from the settings pane
+                SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
+
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
@@ -88,6 +93,22 @@ namespace Station366
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            // Add an About command
+            var about = new SettingsCommand("about", 
+                "About", 
+                (handler) =>
+                    {
+                        var settings = new SettingsFlyout();
+                        settings.Content = new About();
+                        settings.HeaderText = "About";
+                        settings.IsOpen = true;
+                    });
+
+            args.Request.ApplicationCommands.Add(about);
         }
     }
 }
