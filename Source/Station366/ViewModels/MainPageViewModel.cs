@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using Station366.Model;
+using Station366.States;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -40,6 +41,38 @@ namespace Station366.ViewModels
         async void Player_MediaEnded(object sender, RoutedEventArgs e)
         {
             await SkipAhead();
+        }
+
+        public void LoadState(MainPageState state)
+        {
+            if (null != state.Stations) _stations.AddRange(state.Stations);
+            if (null != state.Tracks) _playList.AddRange(state.Tracks);
+            if (null != state.CurrentStationId)
+            {
+                // Set the backing field to avoid running the logic in the setter, property is manually notified
+                _selectedStation = Stations.FirstOrDefault(s => s.Id == state.CurrentStationId.Value);
+                RaisePropertyChanged(SelectedStationPropertyName);
+            }
+
+            if (null != state.CurrentTrackRadioPosition)
+            {
+                // TODO In LoadState, we cannot yet access the Player property, but we have to set the Source somehow 
+                _currentTrack = _playList.FirstOrDefault(t => t.RadioPosition == state.CurrentTrackRadioPosition.Value);
+                RaisePropertyChanged(CurrentTrackPropertyName);
+
+                // CurrentTrack = _playList.FirstOrDefault(t => t.RadioPosition == state.CurrentTrackRadioPosition.Value);
+            }
+        }
+
+        public MainPageState SaveState()
+        {
+            return new MainPageState()
+            {
+                Stations = this.Stations,
+                Tracks = this._playList,
+                CurrentStationId = SelectedStation != null ? SelectedStation.Id : (int?)null,
+                CurrentTrackRadioPosition = CurrentTrack != null ? CurrentTrack.RadioPosition : (int?)null
+            };
         }
 
         public const string StationsPropertyName = "Stations";

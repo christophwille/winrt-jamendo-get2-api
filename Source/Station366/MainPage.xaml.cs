@@ -7,6 +7,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Xml.Linq;
 using GalaSoft.MvvmLight;
+using Station366.Common;
+using Station366.States;
 using Station366.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -92,8 +94,18 @@ namespace Station366
         /// session.  This will be null the first time a page is visited.</param>
         protected override async void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            // TODO (if serious about creating a player): load a cached copy first, then get the stations online, compare, rebind if necessary
-            await ViewModel.GetStations();
+            if (pageState != null && pageState.ContainsKey(Constants.MainPageState))
+            {
+                string serializedState = pageState[Constants.MainPageState].ToString();
+                var state = SerializationHelper.DeserializeFromString<MainPageState>(serializedState);
+
+                ViewModel.LoadState(state);
+            }
+            else
+            {
+                // TODO (if serious about creating a player): load a cached copy first, then get the stations online, compare, rebind if necessary
+                await ViewModel.GetStations();
+            }
         }
 
         /// <summary>
@@ -104,6 +116,8 @@ namespace Station366
         /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
+            string serializedState = SerializationHelper.SerializeToString(ViewModel.SaveState());
+            pageState[Constants.MainPageState] = serializedState;
         }
     }
 }

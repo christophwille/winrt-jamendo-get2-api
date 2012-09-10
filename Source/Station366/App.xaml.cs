@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Callisto.Controls;
+using Station366.Common;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -33,6 +34,7 @@ namespace Station366
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.Resuming += OnResuming;
         }
 
         /// <summary>
@@ -41,26 +43,27 @@ namespace Station366
         /// search results, and so forth.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        protected async override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            // Register handler for CommandsRequested events from the settings pane
+            SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
             {
-                // Register handler for CommandsRequested events from the settings pane
-                SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
-
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
+                SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
 
                 // http://www.markermetro.com/2012/05/technical/windows-8-metro-style-apps-background-audio-with-xamlc/
                 rootFrame.Style = Resources["RootFrameStyle"] as Style;
 
                 if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    //TODO: Load state from previously suspended application
+                    await SuspensionManager.RestoreAsync();
                 }
 
                 // Place the frame in the current Window
@@ -88,11 +91,15 @@ namespace Station366
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+            await SuspensionManager.SaveAsync();
             deferral.Complete();
+        }
+        private async void OnResuming(object sender, object e)
+        {
+            await SuspensionManager.RestoreAsync();
         }
 
         void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)

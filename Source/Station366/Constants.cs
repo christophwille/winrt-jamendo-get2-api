@@ -12,5 +12,7 @@ namespace Station366
         public const string PrivacyPolicyUrl = "https://github.com/christophwille/winrt-jamendo-get2-api/wiki/Privacy-Policy";
 
         public const int NumOfTracksToRetrievePerCall = 20;
+
+        public const string MainPageState = "MainPageState";
     }
 }
