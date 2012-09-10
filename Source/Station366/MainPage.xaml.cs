@@ -105,20 +105,5 @@ namespace Station366
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
         }
-
-        private void TrackImage_OnTapped(object sender, TappedRoutedEventArgs e)
-        {
-            var currentTrack = ViewModel.CurrentTrack;
-
-            if (null == currentTrack)
-                return;
-
-            var url = currentTrack.Album.Url;
-
-            if (!String.IsNullOrWhiteSpace(url))
-            {
-                Windows.System.Launcher.LaunchUriAsync(new Uri(url));
-            }
-        }
     }
 }

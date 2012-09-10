@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Diagnostics;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -304,6 +305,33 @@ namespace Station366.ViewModels
             if (stations.Count == 0)
             {
                 IsStationsInfoMessagesPaneVisible = true;
+            }
+        }
+
+
+        private RelayCommand _imageTappedCommand;
+        public RelayCommand ImageTappedCommand
+        {
+            get
+            {
+                return _imageTappedCommand
+                    ?? (_imageTappedCommand = new RelayCommand(
+                        () => ImageTapped()));
+            }
+        }
+
+        private void ImageTapped()
+        {
+            var currentTrack = CurrentTrack;
+
+            if (null == currentTrack)
+                return;
+
+            var url = currentTrack.Album.Url;
+
+            if (!String.IsNullOrWhiteSpace(url))
+            {
+                Windows.System.Launcher.LaunchUriAsync(new Uri(url));
             }
         }
     }

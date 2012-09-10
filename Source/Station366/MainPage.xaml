@@ -9,6 +9,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:data="using:Station366.Model"
+    xmlns:winrtbehaviors="using:WinRtBehaviors"
+    xmlns:behaviors="using:Win8nl.Behaviors"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -135,9 +137,11 @@
                 
                 <Grid HorizontalAlignment="Center" Width="250" Height="250" Grid.Row="0" VerticalAlignment="Top">
                     <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                        <Image Source="{Binding CurrentTrack.Album.ImageUrl}" Stretch="UniformToFill" 
-                               Tapped="TrackImage_OnTapped"
-                               AutomationProperties.Name="{Binding CurrentTrack.Name}"/>
+                        <Image Source="{Binding CurrentTrack.Album.ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding CurrentTrack.Name}">
+                            <winrtbehaviors:Interaction.Behaviors>
+                                <behaviors:EventToCommandBehavior Event="Tapped" Command="ImageTappedCommand" />
+                            </winrtbehaviors:Interaction.Behaviors>
+                        </Image>
                     </Border>
                     <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
                         <TextBlock Text="{Binding CurrentTrack.Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
