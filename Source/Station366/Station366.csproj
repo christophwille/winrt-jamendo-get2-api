@@ -12,8 +12,9 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>Station366_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Station366_StoreKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <PackageCertificateThumbprint>908B32B7DE583C0980CDE643D88965EA016C93D2</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -134,6 +135,7 @@
     </AppxManifest>
     <None Include="Assets\station366.cdr" />
     <None Include="packages.config" />
+    <None Include="Station366_StoreKey.pfx" />
     <None Include="Station366_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +145,7 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Common\ReadMe.txt" />
     <Content Include="MITLicense.txt" />
+    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

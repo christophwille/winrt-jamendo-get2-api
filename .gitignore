@@ -12,3 +12,8 @@ _ReSharper*/
 
 *.user
 *.suo
+
+# Ignore everything that has to do with the Store
+AppPackages/
+Station366_StoreKey.pfx
+Package.StoreAssociation.xml
