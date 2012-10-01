@@ -144,8 +144,20 @@
                         </Image>
                     </Border>
                     <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                        <TextBlock Text="{Binding CurrentTrack.Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
-                        <TextBlock Text="{Binding CurrentTrack.Album.Name}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                        <TextBlock Text="{Binding CurrentTrack.Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" 
+                                   Style="{StaticResource TitleTextStyle}" 
+                                   Height="40" Margin="15,0,15,0"/>
+                        <TextBlock Text="{Binding CurrentTrack.Album.Name}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" 
+                                   Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" 
+                                   Margin="15,0,5,0"/>
+                        <Slider x:Name="SeekBar" 
+                                Maximum="{Binding SeekBarMaximum}"
+                                LargeChange="{Binding SeekBarLargeChange}"
+                                Value="{Binding SeekBarPosition, Mode=TwoWay}" 
+                                ValueChanged="SeekBar_ValueChanged" 
+                                IsThumbToolTipEnabled="False"
+                                Margin="15,0,15,0"
+                                />
                     </StackPanel>
                 </Grid>
                 

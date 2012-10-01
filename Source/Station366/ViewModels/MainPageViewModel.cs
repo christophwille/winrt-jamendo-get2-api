@@ -55,8 +55,66 @@ namespace Station366.ViewModels
 
         void Player_MediaOpened(object sender, RoutedEventArgs e)
         {
-            // Could be useful later
-            var trackDuration = Player.NaturalDuration.TimeSpan;
+            SeekBarPosition = 0.0;
+
+            if (Player.NaturalDuration.HasTimeSpan)
+            {
+                var trackDuration = Player.NaturalDuration.TimeSpan;
+                SeekBarMaximum = trackDuration.TotalSeconds;
+                SeekBarLargeChange = Math.Min(10, trackDuration.Seconds/10.0);
+            }
+        }
+
+        public void UpdateSeekBarPosition()
+        {
+            SeekBarPosition = Player.Position.TotalSeconds;
+        }
+
+        public void SetSeekBarPosition(TimeSpan pos)
+        {
+            Player.Position = pos;
+        }
+
+        public const string SeekBarPositionPropertyName = "SeekBarPosition";
+        private double _seekbarPosition = 0;
+        public double SeekBarPosition
+        {
+            get
+            {
+                return _seekbarPosition;
+            }
+            private set
+            {
+                Set(SeekBarPositionPropertyName, ref _seekbarPosition, value);
+            }
+        }
+
+        public const string SeekBarLargeChangePropertyName = "SeekBarLargeChange";
+        private double _seekbarLargeChange = 0;
+        public double SeekBarLargeChange
+        {
+            get
+            {
+                return _seekbarLargeChange;
+            }
+            private set
+            {
+                Set(SeekBarLargeChangePropertyName, ref _seekbarLargeChange, value);
+            }
+        }
+
+        public const string SeekBarMaximumPropertyName = "SeekBarMaximum";
+        private double _seekbarMax = 0;
+        public double SeekBarMaximum
+        {
+            get
+            {
+                return _seekbarMax;
+            }
+            private set
+            {
+                Set(SeekBarMaximumPropertyName, ref _seekbarMax, value);
+            }
         }
 
         async void Player_MediaEnded(object sender, RoutedEventArgs e)

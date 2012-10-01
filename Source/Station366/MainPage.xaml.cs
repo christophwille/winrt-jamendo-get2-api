@@ -33,6 +33,7 @@ namespace Station366
     public sealed partial class MainPage : Station366.Common.LayoutAwarePage
     {
         public MainPageViewModel ViewModel { get; set; }
+        private DispatcherTimer _timer;
 
         public MainPage()
         {
@@ -94,6 +95,13 @@ namespace Station366
         /// session.  This will be null the first time a page is visited.</param>
         protected override async void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            _timer = new DispatcherTimer()
+                            {
+                                Interval = TimeSpan.FromMilliseconds(200)
+                            };
+            _timer.Tick += TimerOnTick;
+            _timer.Start();
+
             if (pageState != null && pageState.ContainsKey(Constants.MainPageState))
             {
                 string serializedState = pageState[Constants.MainPageState].ToString();
@@ -116,8 +124,20 @@ namespace Station366
         /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
+            _timer.Tick -= TimerOnTick;
+
             string serializedState = SerializationHelper.SerializeToString(ViewModel.SaveState());
             pageState[Constants.MainPageState] = serializedState;
+        }
+
+        private void TimerOnTick(object sender, object o)
+        {
+            ViewModel.UpdateSeekBarPosition();
+        }
+
+        private void SeekBar_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            ViewModel.SetSeekBarPosition(TimeSpan.FromSeconds(SeekBar.Value));
         }
     }
 }
