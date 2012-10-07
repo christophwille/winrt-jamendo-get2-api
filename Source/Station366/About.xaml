@@ -12,7 +12,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <TextBlock Style="{StaticResource TitleTextStyle}">Station 366</TextBlock>
-            <TextBlock Style="{StaticResource CaptionTextStyle}">Version 1.0</TextBlock>
+            <TextBlock x:Name="VersionInformationTextBlock" Style="{StaticResource CaptionTextStyle}">Version 1.0</TextBlock>
             <TextBlock Style="{StaticResource CaptionTextStyle}">Christoph Wille</TextBlock>
             <HyperlinkButton Content="Support &amp; Source Code" Click="Support_OnClick" Margin="0,15,0,0"/>
             <HyperlinkButton Content="Privacy Statement" Click="PrivacyStatement_OnClick"/>
