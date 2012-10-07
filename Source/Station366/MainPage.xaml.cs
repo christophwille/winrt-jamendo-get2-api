@@ -59,27 +59,29 @@ namespace Station366
             ViewModel.AttachPlayerEvents();
         }
 
-        private async void MediaControlOnPlayPauseTogglePressed(object sender, object o)
+        // If the App is in the background, all those events come in on the background (potentially)
+        // Thus the ViewModel marshals to the UI thread because otherwise there COMExceptions for x-thread access violations
+        private void MediaControlOnPlayPauseTogglePressed(object sender, object o)
         {
             ViewModel.PlayPauseToggle();
         }
 
-        private async void MediaControlOnNextTrackPressed(object sender, object o)
+        private void MediaControlOnNextTrackPressed(object sender, object o)
         {
             ViewModel.SkipAhead();
         }
 
-        private async void MediaControlOnStopPressed(object sender, object o)
+        private void MediaControlOnStopPressed(object sender, object o)
         {
             ViewModel.Pause();
         }
 
-        private async void MediaControlOnPausePressed(object sender, object o)
+        private void MediaControlOnPausePressed(object sender, object o)
         {
             ViewModel.Pause();
         }
 
-        private async void MediaControlOnPlayPressed(object sender, object o)
+        private void MediaControlOnPlayPressed(object sender, object o)
         {
             ViewModel.Play();
         }

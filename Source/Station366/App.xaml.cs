@@ -82,6 +82,7 @@ namespace Station366
             }
             // Ensure the current window is active
             Window.Current.Activate();
+            UIDispatcher.Initialize();
         }
 
         /// <summary>

@@ -117,6 +117,7 @@
     <Compile Include="Common\SerializationHelper.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Common\TwoStageConverter.cs" />
+    <Compile Include="Common\UIDispatcher.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="JamendoProxy.cs" />
     <Compile Include="MainPage.xaml.cs">

@@ -12,6 +12,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Station366.Common;
 
 namespace Station366.ViewModels
 {
@@ -34,8 +35,7 @@ namespace Station366.ViewModels
                 string streamUrl = currentTrack.StreamUrl;
                 string trackName = currentTrack.Name;
 
-                Window.Current.Dispatcher.RunAsync(
-                    CoreDispatcherPriority.Normal, 
+                UIDispatcher.Execute(
                     () =>
                         {
                             Player.AutoPlay = false;
@@ -117,9 +117,9 @@ namespace Station366.ViewModels
             }
         }
 
-        async void Player_MediaEnded(object sender, RoutedEventArgs e)
+        void Player_MediaEnded(object sender, RoutedEventArgs e)
         {
-            await SkipAhead();
+            SkipAhead();
         }
 
         public void LoadState(MainPageState state)
@@ -268,7 +268,8 @@ namespace Station366.ViewModels
 
         public void Pause()
         {
-            Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Player.Pause());
+            // MediaControl.TrackName = string.Empty; 
+            UIDispatcher.Execute(() => Player.Pause());
         }
 
         private RelayCommand _skipaheadCommand;
@@ -278,7 +279,7 @@ namespace Station366.ViewModels
             {
                 return _skipaheadCommand
                     ?? (_skipaheadCommand = new RelayCommand(
-                        async () => await SkipAhead(),
+                        SkipAhead,
                         () => CanSkipAhead));
             }
         }
@@ -288,20 +289,23 @@ namespace Station366.ViewModels
             get { return true; }
         }
 
-        public async Task SkipAhead()
+        public void SkipAhead()
         {
-            IsPlayerInfoMessagesPaneVisible = false;
+            UIDispatcher.Execute(async () =>
+                {
+                    IsPlayerInfoMessagesPaneVisible = false;
 
-            int numOfElements = _playList.Count();
-            int radioposition = CurrentTrack != null ? CurrentTrack.RadioPosition : 0;
-            radioposition++;
+                    int numOfElements = _playList.Count();
+                    int radioposition = CurrentTrack != null ? CurrentTrack.RadioPosition : 0;
+                    radioposition++;
 
-            CurrentTrack = _playList.FirstOrDefault(t => t.RadioPosition == radioposition);
+                    CurrentTrack = _playList.FirstOrDefault(t => t.RadioPosition == radioposition);
 
-            if (numOfElements - radioposition == 2)
-            {
-                await FillPlaylist();
-            }
+                    if (numOfElements - radioposition == 2)
+                    {
+                        await FillPlaylist();
+                    }       
+                });
         }
 
         private RelayCommand _playCommand;
@@ -323,7 +327,7 @@ namespace Station366.ViewModels
 
         public void Play()
         {
-            Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Player.Play());
+            UIDispatcher.Execute(() => Player.Play());
         }
 
         private void SetPlayerSourceToCurrentTrack()
@@ -332,7 +336,7 @@ namespace Station366.ViewModels
 
             if (null == currentTrack)
             {
-                Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Player.Source = null);
+                UIDispatcher.Execute(() => Player.Source = null);
 
                 Windows.Media.MediaControl.TrackName = "";
 
@@ -340,7 +344,7 @@ namespace Station366.ViewModels
             }
 
             string streamUrl = currentTrack.StreamUrl;
-            Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Player.Source = new Uri(streamUrl));
+            UIDispatcher.Execute(() => Player.Source = new Uri(streamUrl));
 
             Windows.Media.MediaControl.TrackName = currentTrack.Name;
 
@@ -350,9 +354,7 @@ namespace Station366.ViewModels
 
         public void PlayPauseToggle()
         {
-            Window.Current.Dispatcher
-                .RunAsync(CoreDispatcherPriority.Normal, 
-                () =>
+            UIDispatcher.Execute(() =>
                     {
                         try
                         {
