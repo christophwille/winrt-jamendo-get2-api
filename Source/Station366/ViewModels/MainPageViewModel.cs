@@ -272,6 +272,11 @@ namespace Station366.ViewModels
             UIDispatcher.Execute(() => Player.Pause());
         }
 
+        public void Stop()
+        {
+            UIDispatcher.Execute(() => Player.Stop());
+        }
+
         private RelayCommand _skipaheadCommand;
         public RelayCommand SkipAheadCommand
         {
@@ -358,13 +363,18 @@ namespace Station366.ViewModels
                     {
                         try
                         {
-                            if (Player.CurrentState == MediaElementState.Stopped)
+                            if (Player.CurrentState == MediaElementState.Paused)
+                            {
                                 Player.Play();
+                            }
                             else
-                                Player.Stop();
+                            {
+                                Player.Pause();
+                            }
                         }
                         catch
                         {
+                            Debug.WriteLine("PlayPauseToggle: Exception");
                         } 
                     });
         }

@@ -73,7 +73,7 @@ namespace Station366
 
         private void MediaControlOnStopPressed(object sender, object o)
         {
-            ViewModel.Pause();
+            ViewModel.Stop();
         }
 
         private void MediaControlOnPausePressed(object sender, object o)
