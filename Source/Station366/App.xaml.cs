@@ -8,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -105,6 +106,14 @@ namespace Station366
 
         void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
+            // #522A5B
+            var c = new Color()
+            {
+                R = 52,
+                G = 42,
+                B = 91
+            };
+
             // Add an About command
             var about = new SettingsCommand("about", 
                 "About", 
@@ -113,6 +122,7 @@ namespace Station366
                         var settings = new SettingsFlyout();
                         settings.Content = new About();
                         settings.HeaderText = "About";
+                        settings.ContentBackgroundBrush = new SolidColorBrush(c);
                         settings.IsOpen = true;
                     });
 
